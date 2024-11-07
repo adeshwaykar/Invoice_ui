@@ -1,0 +1,27 @@
+/* Stack table headers on small screens */
+@media (max-width: 768px) {
+    .table-responsive table thead {
+      display: none; /* Hide headers */
+    }
+    
+    .table-responsive table tbody tr {
+      display: block;
+      margin-bottom: 10px;
+    }
+    
+    .table-responsive table tbody td {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem;
+      border-top: 1px solid #dee2e6;
+    }
+    
+    .table-responsive table tbody td::before {
+      content: attr(data-label);
+      font-weight: bold;
+      flex-basis: 50%;
+      text-align: left;
+      padding-right: 1rem;
+    }
+  }
+  

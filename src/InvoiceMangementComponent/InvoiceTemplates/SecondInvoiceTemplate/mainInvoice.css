@@ -1,0 +1,182 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+}
+.invoice-box {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    border: 1px solid #eee;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+.invoice-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.invoice-header h1 {
+    font-size: 24px;
+    color: #333;
+}
+.company-details, .invoice-details {
+    margin-bottom: 20px;
+}
+.company-details h2, .invoice-details h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+.company-details p, .invoice-details p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666;
+}
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.invoice-table th, .invoice-table td {
+    padding: 10px;
+    border: 1px solid #eee;
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+}
+.invoice-table th {
+    background-color: #f2f2f2;
+}
+.total-section {
+    text-align: right;
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+
+
+
+/* fixed invoice */
+/* mainInvoice.css */
+
+.invoice-box1 {
+    display: none; /* Keep hidden except during PDF generation */
+    width: 800px; /* Fixed width for PDF */
+    padding: 20px;
+    background-color: white;
+    color: black;
+}
+
+.invoice-header1, .company-details1, .invoice-details1, .bill-to1, .total-section1 {
+    width: 100%; /* Full width within fixed container */
+}
+
+.invoice-table1 {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.invoice-table1 th, .invoice-table1 td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+
+
+
+/* temparary templates */
+
+
+/* Use the same CSS as before */
+body {
+    font-family: Arial, sans-serif;
+}
+
+.invoice-container {
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.company-info {
+    width: 60%;
+    font-size: 14px;
+}
+
+.logo img {
+    width: 100px;
+}
+
+.invoice-title {
+    text-align: center;
+    background-color: #d9b2d6;
+    color: #fff;
+    padding: 10px;
+    font-size: 24px;
+    margin: 20px 0;
+}
+
+.billing-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.bill-to, .shipping-info {
+    width: 48%;
+}
+
+.invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.invoice-table th, .invoice-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.invoice-table th {
+    background-color: #d9b2d6;
+    color: #fff;
+}
+
+.total-info {
+   
+    font-size: 14px;
+}
+
+.sub-total {
+    text-align: right;
+}
+
+.terms {
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.terms p {
+    margin: 5px 0;
+}

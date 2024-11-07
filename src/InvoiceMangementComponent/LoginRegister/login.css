@@ -1,0 +1,74 @@
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+.h-custom {
+height: calc(100% - 73px);
+
+}
+@media (max-width: 450px) {
+.h-custom {
+height: 100%;
+}
+}
+
+/* Basic styles */
+.form-outline {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+/* Input animation styles */
+.form-control {
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Label animation styles */
+.form-label {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: #999;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus + .form-label,
+.form-control:not(:placeholder-shown) + .form-label {
+    top: -10px;
+    left: 10px;
+    font-size: 12px;
+    color: #007bff;
+}
+
+/* Button animation styles */
+.btn {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.form-start{
+    margin-top: 5%;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    
+}
+.btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* Checkbox animation styles */
+.form-check-input {
+    transition: transform 0.3s ease;
+}
+
+.form-check-input:checked {
+    transform: scale(1.2);
+}
