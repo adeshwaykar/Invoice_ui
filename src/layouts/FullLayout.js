@@ -20,7 +20,7 @@ const [userLevel,setUserLevel]=useState(localStorage.getItem("userLevel"))
         {/********Content Area**********/}
         <div className="contentArea">
           {/********Middle Content**********/}
-          <Container className="p-4" fluid>
+          <Container className="p-4 my-4" fluid>
           {userLevel=="1"?(<RemainingRegistrationModal isPendimg={true}/>):(<Outlet />)}
             
           </Container>

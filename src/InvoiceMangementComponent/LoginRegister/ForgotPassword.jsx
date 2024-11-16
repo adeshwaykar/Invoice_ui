@@ -1,11 +1,11 @@
 import React, { useContext, useState } from 'react'
-import "./login.css"
-import { Link, useNavigate, useNavigation } from 'react-router-dom'
-import { LoginRegisterContext } from '../../InvoiceManagementContext/LoginRegisterContext'
+import { LoginRegisterContext } from '../../InvoiceManagementContext/LoginRegisterContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { Toast } from 'bootstrap';
+import { toast } from 'react-toastify';
 
-
-const Registration = () => {
-    const { SendOtpToCustomer, VerifyEmailThroughtEmail ,SaveCustomer} = useContext(LoginRegisterContext)
+const ForgotPassword = () => {
+    const {  VerifyEmailThroughtEmail ,SaveCustomer,SendOtpToForgotCustomer} = useContext(LoginRegisterContext)
     const [error, setError] = useState();
     const [email, setEmail] = useState();
     const[password,setPassword]=useState();
@@ -22,9 +22,9 @@ const Registration = () => {
         const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         
         if(regex.test(email)){
-        const ans = await SendOtpToCustomer(email);
-        if (ans==="email alredy exist") {
-            setError( "email Alerdy exist plase got to login page and login ")
+        const ans = await SendOtpToForgotCustomer(email);
+        if (ans==="email not exist") {
+            setError( "user not found ")
 
         }else if(ans==="send email"){
             setCheckVerifyButtonText(true)
@@ -63,7 +63,8 @@ const Registration = () => {
               }
           const status=  await SaveCustomer(customer);
           if(status){
-            navigate("/dashboard")
+            toast.success("password reset succefully plase login through it ");
+            navigate("/login")
           }else{
             setError("something get Wrong")
           }
@@ -225,4 +226,4 @@ const Registration = () => {
     )
 }
 
-export default Registration
+export default ForgotPassword

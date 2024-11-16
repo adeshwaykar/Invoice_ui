@@ -1,22 +1,45 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import "./login.css"
+import { LoginRegisterContext } from '../../InvoiceManagementContext/LoginRegisterContext';
 const Login = () => {
-    const navigate = useNavigate();
+  const { LoginUser } = useContext(LoginRegisterContext); // Use useContext here
+  const[email,setEmail]=useState();
+  const[pasword,setPassword]=useState();
+  const[error,setError]=useState();
 
-    const demo = () => {
-        localStorage.setItem("login",true)
-        localStorage.setItem("userLevel",1)
-        navigate("/dashboard"); // Make sure the /dashboard route is defined in your routes configuration
-    };
+//"customer6@example.com"  password123
+    const CheckLoginIdAndPassword =async (e) => {
+      e.preventDefault();
+      const response={
+        email:email,
+        password:pasword
+      }
+     const loginOrNot=await LoginUser(response);
+     // alert(loginOrNot)
+     if(!loginOrNot){
+      setError("Invalid Email or Password");
+     }
+   };
 
+  //  useEffect(()=>{  
+   
+   
+  //  },[])
 
     return (
         
         
     
           <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1 form-start p-5">
-            <form>
+            {error &&
+            <>
+             <div className='text errorCode'>
+              invalid credential
+             </div>
+            </>
+            }
+            <form onSubmit={(e)=>CheckLoginIdAndPassword(e)}>
               <div className="text-center ">
                 <h3 className=" ">Sign in</h3>
                 {/* <button type="button" className="btn btn-primary btn-floating mx-1">
@@ -41,6 +64,7 @@ const Login = () => {
                   id="form3Example3"
                   className="form-control form-control-lg"
                   placeholder=""
+                  onChange={(e)=>{setEmail(e.target.value); setError()}}
                 />
                 <label className="form-label" htmlFor="form3Example3">
                   Email address
@@ -54,6 +78,7 @@ const Login = () => {
                   id="form3Example4"
                   className="form-control form-control-lg"
                   placeholder=""
+                  onChange={(e)=>{setPassword(e.target.value) ;setError()}}
                 />
                 <label className="form-label" htmlFor="form3Example4">
                   Password
@@ -68,13 +93,14 @@ const Login = () => {
                     Remember me
                   </label>
                 </div>
-                <a href="#!" className="text-body">
-                  Forgot password?
-                </a>
+               
+                  <Link to={"/fogotPassword"}  className="text-body">  Forgot password?</Link>
+                 
+                
               </div>
 
               <div className="text-center  mt-4 pt-2">
-                <button type="button" className="btn btn-primary btn-lg" onClick={demo} style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}>
+                <button type="submit" className="btn btn-primary btn-lg"  style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}>
                   Login
                 </button>
                 <p className="small fw-bold mt-2 pt-1 mb-0">

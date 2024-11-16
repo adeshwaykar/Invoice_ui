@@ -11,6 +11,9 @@ import SecondInvoice from "../InvoiceMangementComponent/InvoiceTemplates/SecondI
 import InvoiceList from "../InvoiceMangementComponent/Invoice/InvoiceListComponent/InvoiceList.jsx";
 import CreateInvoice from "../InvoiceMangementComponent/Invoice/CreateInvoiceCompoenent/CreateInvoice.jsx";
 import VendorList from "../InvoiceMangementComponent/ClientVendor/VendorList.jsx";
+import ForgotPassword from "../InvoiceMangementComponent/LoginRegister/ForgotPassword.jsx";
+import Product from "../InvoiceMangementComponent/Product/Product.jsx";
+import ProductTable from "../InvoiceMangementComponent/Product/ProductTable.jsx";
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
 
@@ -42,6 +45,10 @@ const ThemeRoutes = [
     element: <LoginRegisterLayOut />,
   },
   {
+    path: "/fogotPassword",
+    element: <LoginRegisterLayOut />,
+  },
+  {
     path: "/error",
     element: <Error />,
   },
@@ -60,6 +67,13 @@ const ThemeRoutes = [
       { path: "venders/vendorForm", element: <VendorForm /> },
       { path: "starter", element: <Starter /> },
       { path: "venders", element: <VendorList /> },
+      {path:"productlist",element:<ProductTable/>},
+      {path:"productlist/product",element:<Product/>},
+      { path: "productlist/product/:id", element: <Product /> },
+
+
+
+
       { path: "about", element: <About /> },
       { path: "alerts", element: <Alerts /> },
       { path: "badges", element: <Badges /> },

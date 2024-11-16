@@ -12,68 +12,68 @@ const navigation = [
   {
     title: "Client",
     href: "/dashboard/clients",
-    icon: "bi bi-bell",
+    icon: "bi bi-people",
   },
   {
     title: "Vendor",
     href: "/dashboard/venders",
-    icon: "bi bi-bell",
+    icon: "bi bi-person-add",
   },
   {
     title: "Invoices",
     href: "/dashboard/invoices",
-    icon: "bi bi-bell",
+    icon: "bi bi-receipt-cutoff",
   },
   {
     title: "Product",
-    href: "/dashboard/p",
-    icon: "bi bi-bell",
+    href: "/dashboard/productlist",
+    icon: "bi bi-journal-text",
   },
   {
     title: "Alert",
     href: "/dashboard/aler",
     icon: "bi bi-bell",
   },
-  {
-    title: "Alert",
-    href: "/dashboard/alerts",
-    icon: "bi bi-bell",
-  },
-  {
-    title: "Badges",
-    href: "/dashboard/badges",
-    icon: "bi bi-patch-check",
-  },
-  {
-    title: "Buttons",
-    href: "/dashboard/buttons",
-    icon: "bi bi-hdd-stack",
-  },
-  {
-    title: "Cards",
-    href: "/dashboard/cards",
-    icon: "bi bi-card-text",
-  },
-  {
-    title: "Grid",
-    href: "/dashboard/grid",
-    icon: "bi bi-columns",
-  },
-  {
-    title: "Table",
-    href: "/dashboard/table",
-    icon: "bi bi-layout-split",
-  },
-  {
-    title: "Forms",
-    href: "/dashboard/forms",
-    icon: "bi bi-textarea-resize",
-  },
-  {
-    title: "Breadcrumbs",
-    href: "/dashboard/breadcrumbs",
-    icon: "bi bi-link",
-  },
+  // {
+  //   title: "Alert",
+  //   href: "/dashboard/alerts",
+  //   icon: "bi bi-bell",
+  // },
+  // {
+  //   title: "Badges",
+  //   href: "/dashboard/badges",
+  //   icon: "bi bi-patch-check",
+  // },
+  // {
+  //   title: "Buttons",
+  //   href: "/dashboard/buttons",
+  //   icon: "bi bi-hdd-stack",
+  // },
+  // {
+  //   title: "Cards",
+  //   href: "/dashboard/cards",
+  //   icon: "bi bi-card-text",
+  // },
+  // {
+  //   title: "Grid",
+  //   href: "/dashboard/grid",
+  //   icon: "bi bi-columns",
+  // },
+  // {
+  //   title: "Table",
+  //   href: "/dashboard/table",
+  //   icon: "bi bi-layout-split",
+  // },
+  // {
+  //   title: "Forms",
+  //   href: "/dashboard/forms",
+  //   icon: "bi bi-textarea-resize",
+  // },
+  // {
+  //   title: "Breadcrumbs",
+  //   href: "/dashboard/breadcrumbs",
+  //   icon: "bi bi-link",
+  // },
   {
     title: "About",
     href: "/dashboard/about",

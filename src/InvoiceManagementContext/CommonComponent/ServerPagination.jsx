@@ -1,5 +1,6 @@
 import React from 'react';
 
+
 const ServerPagination = ({ totalItems, itemsPerPage, currentPage, onPageChange }) => {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 

@@ -72,3 +72,9 @@ height: 100%;
 .form-check-input:checked {
     transform: scale(1.2);
 }
+
+
+
+.errorCode{
+    color: red;
+}

@@ -2,6 +2,7 @@ import React from 'react'
 import Login from './Login'
 import Registration from './Registration'
 import { useLocation } from 'react-router-dom'
+import ForgotPassword from './ForgotPassword'
 
 const LoginRegisterLayOut = () => {
     
@@ -21,6 +22,7 @@ const LoginRegisterLayOut = () => {
           </div>
           {location.pathname === '/login' && <Login />}
               {location.pathname === '/register' && <Registration />}
+              {location.pathname==="/fogotPassword" && <ForgotPassword/>}
         
         </div>
       </div>
