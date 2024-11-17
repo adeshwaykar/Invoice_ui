@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardBody, CardFooter, CardTitle } from 'reactstrap'
 import VendorHeader from './VendorHeader'
 import VendorTable from './VendorTable'
 import ServerPagination from '../../InvoiceManagementContext/CommonComponent/ServerPagination'
 import { Alert } from 'bootstrap'
+import { getVendorByCustomerId } from '../../InvoiceManagementServices/VendorService'
 
 const listVendor = [
     {
@@ -72,6 +73,21 @@ const VendorList = () => {
     const [itemsPerPage] = useState(10);
     const [totalItems, setTotalItems] = useState(100);
 
+
+
+    useEffect(()=>{
+      GetVendorList()
+    },[])
+
+
+    const GetVendorList=async()=>{
+      const data=await getVendorByCustomerId();
+      if(data.success){
+        setVendors(data.data)
+      }
+
+    }
+
     const handlePageChange = (page) => {
       alert(page)
         setCurrentPage(page);
@@ -84,7 +100,7 @@ const VendorList = () => {
                         <VendorHeader />
                     </CardTitle>
                     <CardBody>
-                        <VendorTable listVendor={listVendor}/>
+                        <VendorTable listVendor={vendors}/>
                         <ServerPagination 
                          totalItems={totalItems}
                          itemsPerPage={itemsPerPage}

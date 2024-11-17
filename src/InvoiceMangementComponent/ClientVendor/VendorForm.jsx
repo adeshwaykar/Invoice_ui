@@ -1,86 +1,157 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Card, CardBody } from "reactstrap";
+import { Card, CardBody, Toast } from "reactstrap";
+import CleintVendorAddress from "./CleintVendorAddress";
+import Select from "react-select";
+import { GstTreatement } from '../CommonComponent/GstTreatement';
+import { SaveVendor } from "../../InvoiceManagementServices/VendorService";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+const FormDataVendor=
+  {
+    vendorClientUniqueId: '',
+    companyName: '',
+    phone: '',
+    email: '',
+    gstTreatement: 'Regular',
+    gstn: '',
+    pan: '',
+    vat: '',
+    website: '',
+    contactPerson: '',
+    conatctPhone: '',
+    conatctEmail: '',
+    address: {
+      addressType: 'Office',
+      address: '',
+      country: 'India',
+      state: '',
+      city: '',
+      pincode: '',
+      faceBookNo: '',
+      dlNO: '',
+      notes: ''
+    },
+    shippingAddress: [],
+    createdDate: new Date().toISOString(),
+    type: 'Vendor',
+    openingBalance: 0
+  }
+
 
 const VendorForm = () => {
-  const [formData, setFormData] = useState({
-    companyName: "",
-    phone: "",
-    email: "",
-    gstTreatement: "",
-    gstn: "",
-    pan: "",
-    vat: "",
-    website: "",
-    contactPerson: "",
-    contactPhone: "",
-    contactEmail: "",
-    address1: {
-      address: "",
-      country: "",
-      state: "",
-      city: "",
-      pincode: "",
-      facebook: "",
-      dlNo: "",
-      note: ""
-    },
-    shippingAddress: {
-      address1: "",
-      country1: "",
-      state1: "",
-      city1: "",
-      pincode1: "",
-      companyNaame1: "",
-      gstin1: ""
-    },
-    isVendor: false,
-    shipToMyAddress: false,
-    shipToDifferentAddress: false,
-  });
+  const navigate=useNavigate()
+  const [shippingAddresses, setShippingAddresses] = useState([]); // Array to hold the instances of shipping addresses
 
-  const [showAddressForm, setShowAddressForm] = useState(false);
-  const [showOtherInfoForm, setShowOtherInfoForm] = useState(false);
-  const [showNotes, setShowNotes] = useState(false);
-  const [showShippingAddress, setShowShippingAddress] = useState(false);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
+  const [vendorData, setVendorData] = useState(FormDataVendor);
+  const [shippingAddress,setShippingAdrress]=useState([]);
+  const handleInputChange = (input,data) => {
+    let name, value;
+  
+    if (input.target) {
+      // Handle text inputs
+      name = input.target.name;
+      value = input.target.value;
+    } else {
+      // Handle react-select components
+      alert(input.value+"  "+data)
+      name = data; // Ensure you set the `name` prop on the `Select` component
+      value = input.value;
+    }
+    setVendorData((prevData) => ({
       ...prevData,
       [name]: value
     }));
   };
 
+  const handleAddressChange = (input,data) => {
+    let name, value;
+  
+    if (input.target) {
+      // Handle text inputs
+      name = input.target.name;
+      value = input.target.value;
+    } else {
+      // Handle react-select components
+      alert(input.value+"  "+data)
+      name = data; // Ensure you set the `name` prop on the `Select` component
+      value = input.value;
+    }
+  
+    setVendorData((prevData) => ({
+      ...prevData,
+      address: {
+        ...prevData.address,
+        [name]: value,
+      },
+    }));
+  
+    alert(JSON.stringify(vendorData));
+  };
+  
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      console.log("save Data")
+     const response= await SaveVendor(vendorData);
+     toast("success","Record save succesfully");
+     setVendorData({})
+     if(response.success){
+      alert("Vendor Saved Successfully");
+     }
+      // const response = await axios.post('http://localhost:8080/api/vendors', vendorData);
+      // console.log('Vendor added:', response.data);
+    } catch (error) {
+      console.error('There was an error adding the vendor!', error);
+    }
+  };
+  const [showAddressForm, setShowAddressForm] = useState(false);
+  const [showOtherInfoForm, setShowOtherInfoForm] = useState(false);
+  const [showNotes, setShowNotes] = useState(false);
+  const [showOpeningBalance, setShowOpeningBalance] = useState(false);
+
+
+
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
-    setFormData((prevData) => ({
+    setShippingAdrress((prevData) => ({
       ...prevData,
       [name]: checked
     }));
   };
 
   const handleAddressToggle = () => {
-    setShowAddressForm((prev) => !prev);
+    setShowAddressForm(true);
+    setShowNotes(false);
+    setShowOpeningBalance(false);
   };
 
-  const handleOtherInfoToggle = () => {
-    setShowOtherInfoForm((prev) => !prev);
-  };
+  
 
   const handleNotesToggle = () => {
-    setShowNotes((prev) => !prev);
+    setShowAddressForm(false);
+    setShowNotes(true);
+    setShowOpeningBalance(false);
   };
 
-  const handleShippingAddressToggle = () => {
-    setShowShippingAddress((prev) => !prev);
+  const handleOpeningBalanceToggle = () => {
+    setShowAddressForm(false);
+    setShowNotes(false);
+    setShowOpeningBalance(true);
+
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-  };
+ 
 
+  const addShippingAddress = () => {
+    setShippingAddresses([...shippingAddresses, shippingAddresses.length + 1]);
+};
+
+const removeShippingAddress=(index)=>{
+     setShippingAddresses(shippingAddresses.filter(x=>x===index));
+}
   return (
     <Card className="mx-3 my-4">
       <CardBody>
@@ -93,7 +164,7 @@ const VendorForm = () => {
 
             <div className="row mt-2">
               {/* Left Column */}
-              <div className="col-12 col-lg-6 border-end">
+              <div className="col-10 col-lg-6 border-end">
                 {[
                   { label: "Company Name", name: "companyName" },
                   { label: "Phone", name: "phone" },
@@ -104,23 +175,27 @@ const VendorForm = () => {
                   { label: "VAT", name: "vat" },
                   { label: "Website", name: "website" }
                 ].map((field) => (
-                  <div className="row mb-3" key={field.name}>
+                  <div className="row mb-3 me-5" key={field.name}>
                     <label className="col-12 col-sm-4 col-form-label">
                       {field.label}
                     </label>
-                    <div className="col-12 col-sm-8">
+                    {field.label==="GST Treatment"? (
+                    <div className="col-12 col-sm-8">  <Select name="gstTreatement" options={GstTreatement} onChange={(e)=>handleInputChange(e,"gstTreatement")}/></div>):
+                    (  <div className="col-12 col-sm-8">
                       <input
                         type="text"
                         name={field.name}
                         className="form-control"
-                        value={formData[field.name]}
+                        value={vendorData[field.name]}
                         onChange={handleInputChange}
                       />
                     </div>
+                  )
+}
                   </div>
                 ))}
 
-                <div className="row mb-3">
+                <div className="row mb-3 me-5">
                   <div className="col-12 col-sm-4"></div>
                   <div className="col-12 col-sm-8">
                     <div className="form-check">
@@ -128,7 +203,7 @@ const VendorForm = () => {
                         type="checkbox"
                         name="isVendor"
                         className="form-check-input"
-                        checked={formData.isVendor}
+                        checked={vendorData.isVendor}
                         onChange={handleCheckboxChange}
                       />
                       <label className="form-check-label">Also as a vendor</label>
@@ -140,10 +215,10 @@ const VendorForm = () => {
 
                 {[
                   { label: "Contact Person", name: "contactPerson" },
-                  { label: "Contact Phone", name: "contactPhone" },
-                  { label: "Contact Email", name: "contactEmail" }
+                  { label: "Contact Phone", name: "conatctPhone" },
+                  { label: "Contact Email", name: "conatctEmail" }
                 ].map((field) => (
-                  <div className="row mb-3" key={field.name}>
+                  <div className="row mb-3 me-5" key={field.name}>
                     <label className="col-12 col-sm-4 col-form-label">
                       {field.label}
                     </label>
@@ -152,7 +227,7 @@ const VendorForm = () => {
                         type="text"
                         name={field.name}
                         className="form-control"
-                        value={formData[field.name]}
+                        value={vendorData[field.name]}
                         onChange={handleInputChange}
                       />
                     </div>
@@ -163,54 +238,69 @@ const VendorForm = () => {
               {/* Right Column */}
               <div className="col-12 col-lg-6">
                 <div className="row border-0 py-2" style={{ backgroundColor: "#f1eeee" }}>
-                  <div className="col text-center">
-                    <a href="#!" onClick={handleAddressToggle} className="d-block">
+                  <div className="col text-center" onClick={handleAddressToggle}>
                       Address
-                    </a>
                   </div>
-                  <div className="col text-center">
-                    <a href="#!" onClick={handleOtherInfoToggle} className="d-block">
-                      Other Info
-                    </a>
-                  </div>
-                  <div className="col text-center">
-                    <a href="#!" onClick={handleNotesToggle} className="d-block">
+                 
+                  <div className="col text-center"  onClick={handleNotesToggle}>
                       Notes
-                    </a>
+                  </div>
+                  <div className="col text-center" onClick={handleOpeningBalanceToggle}>
+                      Opening Balance
+                  </div>
+                  <div className="col-3">
+
                   </div>
                 </div>
 
                 {showAddressForm && (
                   <div className="mt-2">
-                    <h5>Address Information</h5>
+                    <CleintVendorAddress title={"Billing Address"} shippingAddresses={shippingAddresses} addShippingAddress={addShippingAddress}
+                    removeShippingAddress={removeShippingAddress}
+                    handleAddressChange={handleAddressChange}
+                    />
                     {/* Address fields */}
                   </div>
                 )}
 
-                {showOtherInfoForm && (
-                  <div className="mt-2">
-                    <h5>Other Information</h5>
-                    {/* Other info fields */}
-                  </div>
-                )}
+               
 
                 {showNotes && (
                   <div className="mt-3">
                     <h5>Notes</h5>
                     <textarea
-                      name="address1.note"
+                      name="notes"
                       className="form-control"
                       rows="4"
-                      value={formData.address1.note}
-                      onChange={handleInputChange}
+                      value={vendorData.address.notes}
+                      onChange={handleAddressChange}
                     />
                   </div>
                 )}
+
+                {showOpeningBalance &&(
+                 <div className="row mb-3 mt-4 ms-1" >
+                 <label className="col-12 col-sm-4 col-form-label">
+                   Opening Balance
+                 </label>
+                 <div className="col-12 col-sm-8">
+                   <input
+                     type="text"
+                     //name={field.name}
+                     className="form-control"
+                     //value={vendorData[field.name]}
+                     //onChange={handleInputChange}
+                   />
+                 </div>
+               </div>
+                )
+                  
+                }
               </div>
             </div>
 
             <div className="text-center mt-4">
-              <button className="btn btn-success" type="submit">
+              <button className="btn btn-success" type="submit" >
                 Save
               </button>
             </div>

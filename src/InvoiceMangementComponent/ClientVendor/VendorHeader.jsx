@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const VendorHeader = () => {
+  const navigate=useNavigate()
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
-
+  const handleRedirect=()=>{
+      navigate("vendorForm")
+  }
   return (
     <div className="mt-3 d-flex justify-content-between align-items-center px-4">
       <div className="col-md-5">
@@ -41,7 +45,7 @@ const VendorHeader = () => {
             <b>Cancel (1)</b>
           </button>
         )}
-        <button className="btn btn-success" id="newbtn">
+        <button className="btn btn-success" id="newbtn" onClick={()=>handleRedirect()}>
           <b>New +</b>
         </button>
         <button className="btn btn-secondary" id="exportbtn">

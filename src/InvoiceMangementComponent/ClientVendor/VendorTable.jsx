@@ -48,8 +48,8 @@ const VendorTable = ({ listVendor }) => {
                   </td>
                   <td>{vendor.companyName}</td>
                   <td>{vendor.contactPerson}</td>
-                  <td>{vendor.billingAddress}</td>
-                  <td>{vendor.city}</td>
+                  <td>{vendor.address?vendor.address.address.slice(0,10):""}...</td>
+                  <td>{vendor.address?vendor.address.city:""}</td>
                   <td>{vendor.email}</td>
                   <td>{vendor.phone}</td>
                   <td>
