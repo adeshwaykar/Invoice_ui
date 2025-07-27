@@ -1,61 +1,83 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Card, CardBody, Toast } from "reactstrap";
-import CleintVendorAddress from "./CleintVendorAddress";
+import ClilentVendorAddress from "./ClilentVendorAddress";
 import Select from "react-select";
 import { GstTreatement } from '../CommonComponent/GstTreatement';
-import { SaveVendor } from "../../InvoiceManagementServices/VendorService";
-import { useNavigate } from "react-router-dom";
+import { getVendorById, SaveVendor, updateVendorById } from "../../InvoiceManagementServices/VendorService";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const FormDataVendor=
-  {
-    vendorClientUniqueId: '',
-    companyName: '',
-    phone: '',
-    email: '',
-    gstTreatement: 'Regular',
-    gstn: '',
-    pan: '',
-    vat: '',
-    website: '',
-    contactPerson: '',
-    conatctPhone: '',
-    conatctEmail: '',
-    address: {
-      addressType: 'Office',
-      address: '',
-      country: 'India',
-      state: '',
-      city: '',
-      pincode: '',
-      faceBookNo: '',
-      dlNO: '',
-      notes: ''
-    },
-    shippingAddress: [],
-    createdDate: new Date().toISOString(),
-    type: 'Vendor',
-    openingBalance: 0
-  }
+const FormDataVendor =
+{
+  vendorClientUniqueId: '',
+  companyName: '',
+  phone: '',
+  email: '',
+  gstTreatement: 'Regular',
+  gstn: '',
+  pan: '',
+  vat: '',
+  website: '',
+  contactPerson: '',
+  conatctPhone: '',
+  conatctEmail: '',
+  address: {
+    addressType: 'Office',
+    address: '',
+    country: 'India',
+    state: '',
+    city: '',
+    pincode: '',
+    faceBookNo: '',
+    dlNO: '',
+    notes: ''
+  },
+  shippingAddress: [],
+  createdDate: new Date().toISOString(),
+  type: 'Vendor',
+  openingBalance: 0
+}
 
 
 const VendorForm = () => {
-  const navigate=useNavigate()
-  const [shippingAddresses, setShippingAddresses] = useState([]); // Array to hold the instances of shipping addresses
-
-  const [vendorData, setVendorData] = useState(FormDataVendor);
-  const [shippingAddress,setShippingAdrress]=useState([]);
-  const handleInputChange = (input,data) => {
-    let name, value;
+  const navigate = useNavigate()
+  const { id } = useParams();
+    const location=useLocation();
   
+  const [shippingAddresses, setShippingAddresses] = useState([]); // Array to hold the instances of shipping addresses
+   const[header,setHeader]=useState(location.pathname==="dashboard/clients/clientForm"?"Client":"Vendor")
+  const [vendorData, setVendorData] = useState(FormDataVendor);
+  const [shippingAddress, setShippingAdrress] = useState([]);
+  const [showAddressForm, setShowAddressForm] = useState(false);
+  const [showOtherInfoForm, setShowOtherInfoForm] = useState(false);
+  const [showNotes, setShowNotes] = useState(false);
+  const [showOpeningBalance, setShowOpeningBalance] = useState(false);
+  useEffect(() => {
+    if (id) {
+      getVendorByItsId(id)
+    }
+
+
+  }, [])
+
+  const getVendorByItsId = async (id) => {
+    const response = await getVendorById(id);
+    setVendorData(response.data)
+    setShowAddressForm(true)
+    console.log(response);
+  }
+
+  const handleInputChange = (input, data) => {
+    let name, value;
+
     if (input.target) {
       // Handle text inputs
       name = input.target.name;
       value = input.target.value;
     } else {
       // Handle react-select components
-      alert(input.value+"  "+data)
+      // alert(input.value+"  "+data)
       name = data; // Ensure you set the `name` prop on the `Select` component
       value = input.value;
     }
@@ -65,20 +87,20 @@ const VendorForm = () => {
     }));
   };
 
-  const handleAddressChange = (input,data) => {
+  const handleAddressChange = (input, data) => {
     let name, value;
-  
+
     if (input.target) {
       // Handle text inputs
       name = input.target.name;
       value = input.target.value;
     } else {
       // Handle react-select components
-      alert(input.value+"  "+data)
+      // alert(input.value+"  "+data)
       name = data; // Ensure you set the `name` prop on the `Select` component
       value = input.value;
     }
-  
+
     setVendorData((prevData) => ({
       ...prevData,
       address: {
@@ -86,31 +108,41 @@ const VendorForm = () => {
         [name]: value,
       },
     }));
-  
-    alert(JSON.stringify(vendorData));
+
+    // alert(JSON.stringify(vendorData));
   };
-  
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      let data=vendorData;
+      if(location.pathname="dashboard/clients/clientForm"){
+        data.type="Client"
+
+      }else{
+        data.type="Vendor"
+
+      }
+
       console.log("save Data")
-     const response= await SaveVendor(vendorData);
-     toast("success","Record save succesfully");
-     setVendorData({})
-     if(response.success){
-      alert("Vendor Saved Successfully");
-     }
+      const response = await SaveVendor(vendorData);
+      toast("success", "Record save succesfully");
+      
+      if (response) {
+        setVendorData(FormDataVendor)
+      setShowAddressForm(false);
+      setShowNotes(false);
+      setShowOpeningBalance(false);
+      
+      }
       // const response = await axios.post('http://localhost:8080/api/vendors', vendorData);
       // console.log('Vendor added:', response.data);
     } catch (error) {
       console.error('There was an error adding the vendor!', error);
     }
   };
-  const [showAddressForm, setShowAddressForm] = useState(false);
-  const [showOtherInfoForm, setShowOtherInfoForm] = useState(false);
-  const [showNotes, setShowNotes] = useState(false);
-  const [showOpeningBalance, setShowOpeningBalance] = useState(false);
+ 
 
 
 
@@ -128,7 +160,7 @@ const VendorForm = () => {
     setShowOpeningBalance(false);
   };
 
-  
+
 
   const handleNotesToggle = () => {
     setShowAddressForm(false);
@@ -143,22 +175,49 @@ const VendorForm = () => {
 
   };
 
- 
+
 
   const addShippingAddress = () => {
+    console.log("test")
     setShippingAddresses([...shippingAddresses, shippingAddresses.length + 1]);
-};
+  };
 
-const removeShippingAddress=(index)=>{
-     setShippingAddresses(shippingAddresses.filter(x=>x===index));
+  const removeShippingAddress = (index) => {
+    setShippingAddresses(shippingAddresses.filter(x => x === index));
+  }
+
+
+const handleUpdate=async()=>{
+  // e.preventDefault();
+    try {
+      console.log("save Data")
+      const response = await updateVendorById(vendorData.vendorClientUniqueId, vendorData);
+      toast("success", "Record save succesfully");
+      navigate("dashboard/venders")
+      if (response.success) {
+        alert("Vendor Saved Successfully");
+      }
+      // const response = await axios.post('http://localhost:8080/api/vendors', vendorData);
+      // console.log('Vendor added:', response.data);
+    } catch (error) {
+      console.error('There was an error adding the vendor!', error);
+    }
 }
+
+
+
+
+
+
+
+
   return (
     <Card className="mx-3 my-4">
       <CardBody>
         <section>
-          <form onSubmit={handleSubmit}>
+          <form >
             <div className="text-center mb-4">
-              <h4>Add New Vendor</h4>
+              <h4>{id?(`Edit ${header}`):(`Add New ${header}`)} </h4>
             </div>
             <hr />
 
@@ -179,19 +238,21 @@ const removeShippingAddress=(index)=>{
                     <label className="col-12 col-sm-4 col-form-label">
                       {field.label}
                     </label>
-                    {field.label==="GST Treatment"? (
-                    <div className="col-12 col-sm-8">  <Select name="gstTreatement" options={GstTreatement} onChange={(e)=>handleInputChange(e,"gstTreatement")}/></div>):
-                    (  <div className="col-12 col-sm-8">
-                      <input
-                        type="text"
-                        name={field.name}
-                        className="form-control"
-                        value={vendorData[field.name]}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  )
-}
+                    {field.label === "GST Treatment" ? (
+                      <div className="col-12 col-sm-8">  <Select name="gstTreatement" options={GstTreatement} 
+                      value={GstTreatement.find(x=>x.value==vendorData.gstTreatement)}
+                      onChange={(e) => handleInputChange(e, "gstTreatement")} /></div>) :
+                      (<div className="col-12 col-sm-8">
+                        <input
+                          type="text"
+                          name={field.name}
+                          className="form-control"
+                          value={vendorData[field.name]}
+                          onChange={handleInputChange}
+                        />
+                      </div>
+                      )
+                    }
                   </div>
                 ))}
 
@@ -239,14 +300,14 @@ const removeShippingAddress=(index)=>{
               <div className="col-12 col-lg-6">
                 <div className="row border-0 py-2" style={{ backgroundColor: "#f1eeee" }}>
                   <div className="col text-center" onClick={handleAddressToggle}>
-                      Address
+                    Address
                   </div>
-                 
-                  <div className="col text-center"  onClick={handleNotesToggle}>
-                      Notes
+
+                  <div className="col text-center" onClick={handleNotesToggle}>
+                    Notes
                   </div>
                   <div className="col text-center" onClick={handleOpeningBalanceToggle}>
-                      Opening Balance
+                    Opening Balance
                   </div>
                   <div className="col-3">
 
@@ -255,15 +316,16 @@ const removeShippingAddress=(index)=>{
 
                 {showAddressForm && (
                   <div className="mt-2">
-                    <CleintVendorAddress title={"Billing Address"} shippingAddresses={shippingAddresses} addShippingAddress={addShippingAddress}
-                    removeShippingAddress={removeShippingAddress}
-                    handleAddressChange={handleAddressChange}
+                    <ClilentVendorAddress title={"Billing Address"} shippingAddresses={shippingAddresses} addShippingAddress={addShippingAddress}
+                      removeShippingAddress={removeShippingAddress}
+                      handleAddressChange={handleAddressChange}
+                      billingAddress={vendorData.address}
                     />
                     {/* Address fields */}
                   </div>
                 )}
 
-               
+
 
                 {showNotes && (
                   <div className="mt-3">
@@ -278,31 +340,40 @@ const removeShippingAddress=(index)=>{
                   </div>
                 )}
 
-                {showOpeningBalance &&(
-                 <div className="row mb-3 mt-4 ms-1" >
-                 <label className="col-12 col-sm-4 col-form-label">
-                   Opening Balance
-                 </label>
-                 <div className="col-12 col-sm-8">
-                   <input
-                     type="text"
-                     //name={field.name}
-                     className="form-control"
-                     //value={vendorData[field.name]}
-                     //onChange={handleInputChange}
-                   />
-                 </div>
-               </div>
+                {showOpeningBalance && (
+                  <div className="row mb-3 mt-4 ms-1" >
+                    <label className="col-12 col-sm-4 col-form-label">
+                      Opening Balance
+                    </label>
+                    <div className="col-12 col-sm-8">
+                      <input
+                        type="text"
+                        //name={field.name}
+                        className="form-control"
+                      //value={vendorData[field.name]}
+                      //onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
                 )
-                  
+
                 }
               </div>
             </div>
-
+               
             <div className="text-center mt-4">
-              <button className="btn btn-success" type="submit" >
-                Save
-              </button>
+              {id?(<button className="btn btn-info" type="button" onClick={()=>handleUpdate()} >
+                Update
+              </button>):
+             (<button className="btn btn-success" type="button" onClick={handleSubmit} >
+             Save
+           </button>)
+
+            }
+             
+            </div>
+            <div className="text-center mt-4">
+              
             </div>
           </form>
         </section>

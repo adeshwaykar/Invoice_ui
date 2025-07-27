@@ -1,17 +1,8 @@
-import React, { useState } from 'react';
-import { Card, CardBody, CardTitle } from 'reactstrap';
+import React from "react";
 
-const VendorTable = ({ listVendor,handleDelete,handleUpdate }) => {
-  const [showDeleteBtn, setShowDeleteBtn] = useState(false);
+const ClientTable=()=>{
 
-  // Handle checkbox selection to display delete button
-  const handleCheckboxChange = (event) => {
-    setShowDeleteBtn(event.target.checked);
-  };
-
- 
-
-  return (
+return (
 
 
 
@@ -51,15 +42,17 @@ const VendorTable = ({ listVendor,handleDelete,handleUpdate }) => {
                   <td>{vendor.phone}</td>
                   <td>
                     <div className='d-flex flex-column flex-md-row align-items-stretch'>
-                      <button className="btn btn-danger btn-sm me-md-2 mb-2 mb-md-0" onClick={() => handleDelete(vendor)}>
+                      <button className="btn btn-danger btn-sm me-md-2 mb-2 mb-md-0" onClick={() => confirmDeleteVendor()}>
                         DELETE
                       </button>
-                      <button className="btn btn-info btn-sm" onClick={()=>handleUpdate(vendor.vendorClientUniqueId)}>Update</button>
+                      <button className="btn btn-info btn-sm">Update</button>
                     </div>
                   </td>
                 </tr>
               ))}
             </tbody>
+
+
 
           </table>
         </div>
@@ -69,6 +62,5 @@ const VendorTable = ({ listVendor,handleDelete,handleUpdate }) => {
 
 
   );
-};
-
-export default VendorTable;
+}
+export default ClientTable;

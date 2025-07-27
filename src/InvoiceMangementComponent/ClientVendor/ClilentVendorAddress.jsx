@@ -4,15 +4,18 @@ import { State_city } from '../CommonComponent/CityAndState';
 import ClientVedorShippingAddress from './ClientVedorShippingAddress';
 
 
-const CleintVendorAddress = ({ title,shippingAddresses,addShippingAddress,removeShippingAddress ,handleAddressChange}) => {
+const ClilentVendorAddress = ({ title, shippingAddresses, addShippingAddress, removeShippingAddress, handleAddressChange, billingAddress }) => {
     const [state, setState] = useState([]);
     const [city, setCity] = useState([]);
 
     useEffect(() => {
         handleStateChange();
+        if(billingAddress && billingAddress.state){
+        handleData(billingAddress.state)
+        }
     }, []);
 
-    const handleStateChange = () => {   
+    const handleStateChange = () => {
         const keys = Object.keys(State_city);
         const options = keys.map((item) => ({
             value: item,
@@ -25,6 +28,7 @@ const CleintVendorAddress = ({ title,shippingAddresses,addShippingAddress,remove
 
     const handleData = (e) => {
         alert(JSON.stringify(e));
+        if(e.value){
         const data = State_city[e.value];
         const options = data.map((item) => ({
             value: item,
@@ -33,9 +37,19 @@ const CleintVendorAddress = ({ title,shippingAddresses,addShippingAddress,remove
         if (options.length > 0) {
             setCity(options);
         }
+    }else{
+        const data = State_city[e];
+        const options = data.map((item) => ({
+            value: item,
+            label: item,
+        }));
+        if (options.length > 0) {
+            setCity(options);
+        }
+    }
     };
 
-   
+
 
     return (
         <>
@@ -45,65 +59,71 @@ const CleintVendorAddress = ({ title,shippingAddresses,addShippingAddress,remove
                 <div className="row py-3">
                     <div className="col-4 ">Address</div>
                     <div className="col-8">
-                        <input type='text' name='address'  className='form-control' onChange={handleAddressChange}/>
+                        <input type='text' name='address' value={billingAddress.address} className='form-control' 
+                        onChange={(e) => { handleAddressChange(e, "address") }}
+                       />
                     </div>
                 </div>
 
                 <div className="row py-3">
                     <div className="col-4">Country</div>
                     <div className="col-8">
-                        <Select name='country' options={[{ value: 'India', label: 'India' }]} onChange={(e)=>{handleAddressChange(e,"country")}}/>
+                        <Select name='country' options={[{ value: 'India', label: 'India' }]} onChange={(e) => { handleAddressChange(e, "country") }} />
                     </div>
                 </div>
 
                 <div className="row py-3">
                     <div className="col-4">State</div>
                     <div className="col-8">
-                    <Select name='state' options={state} onChange={(e) => {handleData(e);handleAddressChange(e,"state")}}/>                    </div>
+                        <Select name='state' options={state} value={state.find((s) => s.value === billingAddress.state) || null}
+
+                            onChange={(e) => { handleData(e); handleAddressChange(e, "state") }} />                    </div>
                 </div>
 
                 <div className="row py-3">
                     <div className="col-4">City</div>
                     <div className="col-8">
-                        <Select name='city' options={city} onChange={(e)=>{handleAddressChange(e,"city")}}/>
+                        <Select name='city' options={city} value={city.find((c) => c.value === billingAddress.city) || null}
+
+                            onChange={(e) => { handleAddressChange(e, "city") }} />
                     </div>
                 </div>
 
                 <div className="row py-3">
                     <div className="col-4">Pincode</div>
                     <div className="col-8">
-                        <input type='text' name='pincode' className='form-control' onChange={handleAddressChange}/>
+                        <input type='text' name='pincode' value={billingAddress.pincode} className='form-control' onChange={handleAddressChange} />
                     </div>
                 </div>
 
-               
+
 
 
                 {/* Render shipping address components dynamically */}
-                {shippingAddresses.map((remove, index) =>
-           
+                {shippingAddresses&& shippingAddresses.map((remove, index) =>
+
                 (<>
                     <ClientVedorShippingAddress />
                     <div className="row mb-2">
-                    <div className="col">
-                        <button className="btn btn-danger" onClick={()=>removeShippingAddress(remove)}>
-                            Remove
-                        </button>
+                        <div className="col">
+                            <button className="btn btn-danger" onClick={() => removeShippingAddress(remove)}>
+                                Remove
+                            </button>
+                        </div>
                     </div>
-                </div>
-                    </>
+                </>
                 ))}
-                <div className="row">
+                {/* <div className="row">
                     <div className="col">
-                        <button className="btn btn-secondary" onClick={addShippingAddress}>
+                        <button className="btn btn-secondary" onClick={()=>addShippingAddress()}>
                             + Add Shipping Address
                         </button>
                     </div>
-                </div>
+                </div> */}
 
             </div>
         </>
     );
 };
 
-export default CleintVendorAddress;
+export default ClilentVendorAddress;

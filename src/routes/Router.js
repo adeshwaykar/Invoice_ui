@@ -14,6 +14,7 @@ import VendorList from "../InvoiceMangementComponent/ClientVendor/VendorList.jsx
 import ForgotPassword from "../InvoiceMangementComponent/LoginRegister/ForgotPassword.jsx";
 import Product from "../InvoiceMangementComponent/Product/Product.jsx";
 import ProductTable from "../InvoiceMangementComponent/Product/ProductTable.jsx";
+import CreateInvoiceComponent from "../InvoiceMangementComponent/Invoice/CreateInvoiceCompoenent/CreateInvoiceComponent.jsx";
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
 
@@ -63,10 +64,14 @@ const ThemeRoutes = [
       { path: "/dashboard", element: <Navigate to="starter" replace /> },
       { path: "invoice/template", element: <SecondInvoice /> },
       {path:"invoices",element:<InvoiceList/>},
-      {path:"invoice/createInvoice",element:<CreateInvoice/>},
+      {path:"invoice/createInvoice",element:<CreateInvoiceComponent/>},
       { path: "venders/vendorForm", element: <VendorForm /> },
+      { path: "venders/vendorForm/:id", element: <VendorForm /> },
       { path: "starter", element: <Starter /> },
       { path: "venders", element: <VendorList /> },
+      { path: "clients", element: <VendorList /> },
+      { path: "clients/clientForm", element: <VendorForm /> },
+      { path: "clients/clientForm/:id", element: <VendorForm /> },
       {path:"productlist",element:<ProductTable/>},
       {path:"productlist/product",element:<Product/>},
       { path: "productlist/product/:id", element: <Product /> },

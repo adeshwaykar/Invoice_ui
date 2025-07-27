@@ -4,7 +4,9 @@ import VendorHeader from './VendorHeader'
 import VendorTable from './VendorTable'
 import ServerPagination from '../../InvoiceManagementContext/CommonComponent/ServerPagination'
 import { Alert } from 'bootstrap'
-import { getVendorByCustomerId } from '../../InvoiceManagementServices/VendorService'
+import { deleteVendorById, getVendorByCustomerId } from '../../InvoiceManagementServices/VendorService'
+import { toast } from 'react-toastify'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 
 const listVendor = [
     {
@@ -68,39 +70,76 @@ const listVendor = [
   // You can then map over this listVendor array to generate your table rows in your component
   
 const VendorList = () => {
+  const navigate=useNavigate();
+  const location=useLocation();
     const [vendors, setVendors] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(10);
     const [totalItems, setTotalItems] = useState(100);
-
+    const[type,setType]=useState();
 
 
     useEffect(()=>{
       GetVendorList()
-    },[])
+    },[location])
 
 
     const GetVendorList=async()=>{
-      const data=await getVendorByCustomerId();
+      let type=""
+      if(location.pathname==="/dashboard/venders"){
+       type="Vendor"
+      }else{
+      type="Client"
+      }
+
+      const data=await getVendorByCustomerId(type);
       if(data.success){
         setVendors(data.data)
       }
-
+      setType(type)
     }
 
     const handlePageChange = (page) => {
       alert(page)
         setCurrentPage(page);
       };
+       // Confirm deletion
+  const confirmDeleteVendor = async(vendor) => {
+    // alert("vendor  "+JSON.stringify(vendor))
+    let isDelete= window.confirm("Are you sure you want to delete this client?");
+        if(isDelete){
+         const response= await deleteVendorById(vendor.vendorClientUniqueId)
+         if(response.success){
+               
+          setVendors(prev=>vendors.filter(x=>x.vendorClientUniqueId!==vendor.vendorClientUniqueId))
+              toast.success("deleted")
+         }else{
+          toast.success("deleted")
+
+         }
+        }
+    alert(isDelete)
+
+  };
+  const handleUpdate=(uniqueId)=>{
+    if(location.pathname==="/dashboard/venders"){
+     navigate(`vendorForm/${uniqueId}`)
+
+     }else{
+     navigate(`clientForm/${uniqueId}`)
+
+     }
+    
+  }
     return (
         <div>
             <section>
                 <Card>
                     <CardTitle>
-                        <VendorHeader />
+                        <VendorHeader type={type}/>
                     </CardTitle>
                     <CardBody>
-                        <VendorTable listVendor={vendors}/>
+                        <VendorTable listVendor={vendors} handleDelete={confirmDeleteVendor} handleUpdate={handleUpdate}/>
                         <ServerPagination 
                          totalItems={totalItems}
                          itemsPerPage={itemsPerPage}

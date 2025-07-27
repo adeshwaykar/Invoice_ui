@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const VendorHeader = () => {
+const VendorHeader = (type) => {
   const navigate=useNavigate()
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
   const handleRedirect=()=>{
+    console.log(type.type,'Vendor')
+    if(type.type=="Vendor"){
       navigate("vendorForm")
+    }else{
+      navigate("clientForm")
+    }
   }
   return (
     <div className="mt-3 d-flex justify-content-between align-items-center px-4">

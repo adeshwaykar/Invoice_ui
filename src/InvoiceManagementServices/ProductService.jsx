@@ -24,12 +24,17 @@ export const SaveProduct = async (product) => {
 
 
 
-export const GetAllProducts = async () => {
+export const GetAllProducts = async (pagination) => {
+    // const queryParams = new URLSearchParams(pagination).toString();
+    // console.log("quaryParams ",queryParams)
+    console.log(
+        "pagination",pagination
+    )
     try {
         const response = await axios.get(
             `${API_URL}items/all`, 
-        
             {
+             params: pagination, // Axios automatically converts this to query string
                 headers: { 
                     'customer_id': localStorage.getItem("customerId") // Ensure customer_id is correct
                 }

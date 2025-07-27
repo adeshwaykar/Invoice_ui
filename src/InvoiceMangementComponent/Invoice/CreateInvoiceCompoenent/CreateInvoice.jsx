@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './CreateInvoice.css';
 import { Card, CardBody } from 'reactstrap';
+import Select from 'react-select';
 
-const CreateInvoice = () => {
+const CreateInvoice = ({clientData,optionProduct,Products,handleClickProduct,selectedProduct}) => {
     
   const [invoiceData, setInvoiceData] = useState({
     clientName: '',
@@ -53,7 +54,8 @@ const CreateInvoice = () => {
         <div className="row mt-3 border-bottom">
           <div className="col-12 col-md-2 mb-4 ms-0">Client Name</div>
           <div className="col-12 col-md-6 mb-4 ms-4">
-            <select 
+            <Select options={clientData} />
+            {/* <select 
               className="form-select" 
               name="clientName"
               onChange={handleInputChange}
@@ -61,13 +63,12 @@ const CreateInvoice = () => {
               id="client_Name"
               aria-label="Select Client Name"
             >
-              {/* Render options dynamically */}
               <option value="">Select Client</option>
               <option value="Example Client">Example Client</option>
               <option value="newClient" style={{ backgroundColor: 'green', color: 'white' }}>
                 + Add New Client
               </option>
-            </select>
+            </select> */}
           </div>
         </div>
 
@@ -174,13 +175,37 @@ const CreateInvoice = () => {
           </tr>
         </thead>
         <tbody>
+          {selectedProduct.length>0 && selectedProduct.map((product,index)=>{
+            return(
+              <tr>
+              <td>{index+1}</td>
+              <td className='col-4'>
+              <Select options={optionProduct}  onChange={(e)=>handleClickProduct(e)}/>
+  
+                {/* <select className="form-select" aria-label="Select Product" id="product_Name">
+                  <option value="#">Select Product</option>
+                  <option value="Example Product">Example Product</option>
+                </select> */}
+                <textarea className="form-control mt-3" id="description"></textarea>
+              </td>
+              <td><input type="number" className="form-control" placeholder={product.unit} /></td>
+              <td><input type="number" className="form-control" placeholder={product.quantity} /></td>
+              <td><input type="number" className="form-control" placeholder={product.percheasecess3} /></td>
+              <td><input type="number" className="form-control" placeholder="Discount" /></td>
+              <td><input type="number" className="form-control" placeholder={product.tax} /></td>
+              <td className='col-2'><button className="btn btn-info" type="button" onClick={addData}>+ Add Line</button></td>
+            </tr>
+            )
+          })}
           <tr>
-            <td>1</td>
+            <td>{selectedProduct.length+1 }</td>
             <td className='col-4'>
-              <select className="form-select" aria-label="Select Product" id="product_Name">
+            <Select options={optionProduct} onChange={(e)=>handleClickProduct(e)}/>
+
+              {/* <select className="form-select" aria-label="Select Product" id="product_Name">
                 <option value="#">Select Product</option>
                 <option value="Example Product">Example Product</option>
-              </select>
+              </select> */}
               <textarea className="form-control mt-3" id="description"></textarea>
             </td>
             <td><input type="number" className="form-control" placeholder="Unit" /></td>

@@ -22,10 +22,10 @@ export const SaveVendor = async (vendor) => {
 };
 
 
-export const getVendorByCustomerId = async () => {
+export const getVendorByCustomerId = async (type) => {
     try {
         const response = await axios.get(
-            `${API_URL}vendors/all`, 
+            `${API_URL}vendors/all?type=${type}`, 
             
             {
                 headers: { 
@@ -41,4 +41,68 @@ export const getVendorByCustomerId = async () => {
         return { success: false, message: error.response ? error.response.data : "Something went wrong." };
     }
 };
+
+
+export const deleteVendorById = async (uniqueId) => {
+    try {
+        const response = await axios.delete(
+            `${API_URL}vendors/${uniqueId}`, 
+            
+            {
+                headers: { 
+                    'customer_id': localStorage.getItem("customerId") // Ensure customer_id is correct
+                }
+            }
+        );
+        
+
+        return { success: response.status === 200, data: response.data };
+    } catch (error) {
+        console.error("Error:", error);
+        return { success: false, message: error.response ? error.response.data : "Something went wrong." };
+    }
+};
+
+
+export const getVendorById = async (uniqueId) => {
+    try {
+        const response = await axios.get(
+            `${API_URL}vendors/${uniqueId}`, 
+            
+            {
+                headers: { 
+                    'customer_id': localStorage.getItem("customerId") // Ensure customer_id is correct
+                }
+            }
+        );
+        
+
+        return { success: response.status === 200, data: response.data };
+    } catch (error) {
+        console.error("Error:", error);
+        return { success: false, message: error.response ? error.response.data : "Something went wrong." };
+    }
+};
+
+
+export const updateVendorById = async (uniqueId,vendorData) => {
+    try {
+        const response = await axios.put(
+            `${API_URL}vendors/${uniqueId}`, vendorData,
+            
+            {
+                headers: { 
+                    'customer_id': localStorage.getItem("customerId") // Ensure customer_id is correct
+                }
+            }
+        );
+        
+
+        return { success: response.status === 200, data: response.data };
+    } catch (error) {
+        console.error("Error:", error);
+        return { success: false, message: error.response ? error.response.data : "Something went wrong." };
+    }
+};
+
 
