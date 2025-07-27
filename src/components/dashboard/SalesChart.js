@@ -68,6 +68,7 @@ const SalesChart = () => {
       name: "2021",
       data: [10, 20, 40, 60, 20, 40, 60, 60, 20],
     },
+    
   ];
 
   return (
